@@ -1,0 +1,26 @@
+# bruh
+
+fn main() {
+  log("Hello World");
+}
+
+log("hello world");
+
+let a = 10;
+
+var a = 20;
+
+let a = 3;
+
+let a = true;
+
+let a = bruh();
+
+bruh();
+
+if true {
+} else if {
+}
+
+
+# vim: set ft=gooscript:
