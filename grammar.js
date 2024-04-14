@@ -25,7 +25,7 @@ module.exports = grammar({
       $.string,
       $.bool,
       $.function_call,
-      $fn_statement
+      $.fn_statement
     ),
 
 
