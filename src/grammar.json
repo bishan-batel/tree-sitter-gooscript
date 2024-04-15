@@ -1590,6 +1590,14 @@
         {
           "type": "SYMBOL",
           "name": "type"
+        },
+        {
+          "type": "STRING",
+          "value": "clone"
+        },
+        {
+          "type": "STRING",
+          "value": "null"
         }
       ]
     },

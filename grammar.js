@@ -1,3 +1,4 @@
+
 /* @ts-nocheck  */
 module.exports = grammar({
   name: 'gooscript',
@@ -216,7 +217,9 @@ module.exports = grammar({
     type: _ => /[A-Z]+[A-Za-z0-9_]*/,
     identifier: $ => choice(
       field('var', /[a-z]+[A-Za-z0-9_]*/),
-      $.type
+      $.type,
+      "clone",
+      "null"
     ),
 
     number: _ => token(/[0-9]+\.?[0-9]*/),

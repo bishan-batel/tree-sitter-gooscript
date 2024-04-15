@@ -1918,6 +1918,10 @@
     "named": false
   },
   {
+    "type": "clone",
+    "named": false
+  },
+  {
     "type": "comment",
     "named": true
   },
@@ -1975,6 +1979,10 @@
   },
   {
     "type": "not",
+    "named": false
+  },
+  {
+    "type": "null",
     "named": false
   },
   {

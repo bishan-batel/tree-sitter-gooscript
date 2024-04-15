@@ -14,6 +14,8 @@
 (use_statement specialized: (identifier) @constant)
 
 (identifier) @variable
+(identifier "clone" @module.builtin)
+(identifier "null" @keyword.exception)
 (type) @type
 
 (bool) @boolean
