@@ -155,9 +155,10 @@ module.exports = grammar({
 
     function_call: $ => prec(203, (seq(
       field('name', $.identifier),
-      '(',
-      commaSep($._expression),
-      ')'
+      choice(
+        prec(50, seq('(', commaSep($._expression), ')')),
+        $.fn_statement
+      ),
     ))),
 
     variable_declare_ident: $ => choice(
@@ -195,12 +196,13 @@ module.exports = grammar({
       ),
     ),
 
+    then: $ => seq("then", $._line_statement_inner, ';'),
     if_statement: $ => prec.left(500, seq(
       choice("if", "unless"),
       $._expression,
       choice(
         $.block,
-        seq("then", $._line_statement_inner, field('then', ';'))
+        $.then
       ),
       optional(
         seq(
@@ -214,13 +216,8 @@ module.exports = grammar({
     )),
 
 
-    type: _ => /[A-Z]+[A-Za-z0-9_]*/,
-    identifier: $ => choice(
-      field('var', /[a-z]+[A-Za-z0-9_]*/),
-      $.type,
-      "clone",
-      "null"
-    ),
+    identifier: $ => /[A-za-z_][A-za-z0-9_]*/,
+
 
     number: _ => token(/[0-9]+\.?[0-9]*/),
     string: $ => (seq('"',

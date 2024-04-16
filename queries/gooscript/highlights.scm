@@ -14,9 +14,31 @@
 (use_statement specialized: (identifier) @constant)
 
 (identifier) @variable
-(identifier "clone" @module.builtin)
-(identifier "null" @keyword.exception)
-(type) @type
+
+((identifier) @variable.builtin
+  (#any-of? @variable.builtin
+        "self"
+        "null"
+        "global"))
+
+((identifier) @constant
+  (#match? @constant "^[A-Z_][A-Z0-9_]+"))
+
+((identifier) @type
+  (#match? @type "^[A-Z][A-Za-z0-9_]+"))
+
+(function_call
+  name: (identifier) @function.call)
+
+(property_expression
+	method: (function_call name: (identifier) @method.call))
+
+(property_expression
+	method: (function_call name: ((identifier) @constructor
+  (#eq? @constructor "new"))))
+
+((comment)+ @comment.documentation
+  (#match? @comment.documentation "^##\s+.*"))
 
 (bool) @boolean
 
@@ -26,15 +48,8 @@
 (fn_statement
 	param: (identifier) @variable.parameter)
 
-(function_call
-  name: (identifier) @function.call)
-
 (property_expression
 	property: (identifier) @field
-)
-
-(property_expression
-	method: (function_call) @method.call
 )
 
 (dictionary

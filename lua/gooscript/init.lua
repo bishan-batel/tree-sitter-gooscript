@@ -8,7 +8,7 @@ M.setup = function ()
 
   parser_config.gooscript = {
     install_info = {
-      url = ".",
+      url = "https://github.com/bishan-batel/tree-sitter-gooscript",
       files = { "src/parser.c" },
       branch = "main",
       generate_requires_npm = true,
@@ -20,9 +20,9 @@ end
 
 
 require("nvim-web-devicons").set_icon {
-  gooscript = {
+  goo = {
     icon = "",
-    color = "#f7fff8",
+    color = "#91ffb8",
     cterm_color = "65",
     name = "Gooscript"
   }

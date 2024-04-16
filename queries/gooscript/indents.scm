@@ -9,22 +9,22 @@
 ] @indent.branch
 
 [
- (fn_statement)
- (if_statement)
  (match_statement)
- (while_statement)
- (for_statement)
  (dictionary)
+ (fn_statement)
+ (variable_declare)
+ (block)
 ] @indent.begin
 
 
-(block "}" @indent.end)
+
 (dictionary "}" @indent.end)
 (match_statement "}" @indent.end)
+(block "}" @indent.end)
 
-(if_statement "then" @indent.end)
-(while_statement "do" @indent.end)
-(for_statement "do" @indent.end)
+; (if_statement "else" @indent.end)
+; (if_statement "then" @indent.begin)
+; (if_statement then: @indent.end)
 
 [
  (comment)
