@@ -7,11 +7,11 @@
 (string char: (char) @string)
 (string escaped: (identifier)@string.escaped)
 
-["module" "use" "from"] @keyword.import
-(module name: (identifier) @module)
+(string [ "\"" "\"\"\"" ] @string )
 
-(use_statement module: (identifier) @module )
-(use_statement specialized: (identifier) @constant)
+["module" "use" "from"] @keyword.import
+
+(module_import name: (identifier) @module )
 
 (identifier) @variable
 
@@ -19,7 +19,10 @@
   (#any-of? @variable.builtin
         "self"
         "null"
-        "global"))
+        "global"
+        "module"))
+
+(eval_expression "eval" @function.builtin)
 
 ((identifier) @constant
   (#match? @constant "^[A-Z_][A-Z0-9_]+"))
@@ -27,8 +30,35 @@
 ((identifier) @type
   (#match? @type "^[A-Z][A-Za-z0-9_]+"))
 
+((identifier) @type.builtin
+  (#any-of? @type.builtin
+   "Dictionary"
+   "Number"
+   "Integer"
+   "String"
+   "Array"
+   "Function"
+))
+
 (function_call
   name: (identifier) @function.call)
+
+(function_call
+  name: ((identifier) @keyword.operator
+  (#eq? @keyword.operator "range")))
+
+"@" @attribute
+
+(annotation
+  (identifier) @attribute) @attribute
+(annotation ty: (identifier) @attribute)
+
+(annotation
+  ty: ((identifier) @attribute.builtin
+  (#any-of? @attribute.builtin
+   "builtin"
+   "debug"
+ )))
 
 (property_expression
 	method: (function_call name: (identifier) @method.call))
@@ -39,6 +69,9 @@
 
 ((comment)+ @comment.documentation
   (#match? @comment.documentation "^##\s+.*"))
+
+(variable_declare_ident
+  name: (identifier) @variable)
 
 (bool) @boolean
 
@@ -58,7 +91,10 @@
 [
  "let"
  "var"
+ "scope"
 ] @keyword
+
+(is_expression ["is" "not"] @keyword)
 
 [
  "fn"
@@ -107,10 +143,6 @@
 ] @operator
 
 [
- "\""
-] @string
-
-[
  "\\n"
  "\\r"
 ] @string.escape
@@ -118,6 +150,7 @@
 [
  ";"
  ","
+ ":"
 ] @punctuation.delimeter
 
 

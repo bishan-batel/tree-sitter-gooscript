@@ -6,18 +6,37 @@ module.exports = grammar({
   inline: $ => [$._expression, $._statement, $._line_statement_inner, $._line_statement],
   world: $ => $.identifier,
   rules: {
-    source_file: $ => seq(optional($.shebang), optional($.module), repeat($._statement), prec(500, optional($._expression))),
+    source_file: $ => seq(
+      optional($.shebang),
+      optional($.module),
+      repeat($._statement),
+      prec(500, optional(choice($._expression, seq($.return_statement, optional(';')))))),
 
     shebang: _ => token(seq('#!', /.*/, '\n')),
 
-    module: $ => seq("module", field('name', $.identifier), ";"),
 
-    use_statement: $ => prec(600, seq(
+    module_import: $ => seq(sep1(field('name', $.identifier), ":"), prec(500, optional(seq(':', '*')))),
+    module: $ => seq("module", $.module_import, ";"),
+
+    use_statement: $ => prec(100, seq(
       "use",
       choice(
-        field('module', $.identifier),
-        seq('{', commaSep(field('specialized', $.identifier)), '}', 'from', field('module', $.identifier)),
-        seq(field('specialized', $.identifier), 'from', field('module', $.identifier)),
+        field('module', $.module_import),
+        seq('{', commaSep(field('specialized', $.module_import)), '}', 'from', field('module', $.module_import)),
+        seq(field('specialized', $.module_import), 'from', field('module', $.module_import)),
+      ),
+    )),
+
+    annotation: $ => prec.left(10000, seq('@',
+      choice(
+        field('ty', $.identifier),
+        seq(
+          '[',
+          commaSep1(
+            field('ty', $.identifier), prec(10000, optional(seq('(', commaSep1(choice($.number, $.string, $.bool)), ')'))),
+          ),
+          ']'
+        ),
       ),
     )),
 
@@ -35,10 +54,11 @@ module.exports = grammar({
       $.for_statement,
       $._line_statement,
       $.fn_statement,
-      $.block
     ),
 
-    block: $ => prec(50, seq('{', repeat($._statement), optional($._expression), '}')),
+    scope_statement: $ => seq("scope", $.block),
+
+    block: $ => prec(50, seq('{', repeat($._statement), field('evaluation', optional($._expression)), '}')),
 
     _line_statement_inner: $ => choice(
       $.variable_declare,
@@ -63,8 +83,15 @@ module.exports = grammar({
       $.unary_expression,
       $.property_expression,
       $.if_statement,
-      $.match_statement
+      $.match_statement,
+      $.eval_expression,
+      $.is_expression,
+      $.scope_statement,
     ),
+
+    eval_expression: $ => seq("eval", "(", $._expression, ")"),
+
+    is_expression: $ => prec.right(100, seq($._expression, "is", optional("not"), sep1($.identifier, ":"))),
 
     match_case: $ => seq(
       $._expression,
@@ -82,9 +109,9 @@ module.exports = grammar({
 
     paren_expression: $ => seq('(', $._expression, ')'),
 
-    property_expression: $ => prec(200, seq(
-      $._expression,
-      ".",
+    property_expression: $ => prec.left(601, seq(
+      prec.left(600, sep1($._expression, choice('.', ':'))),
+      choice(".", ':'),
       choice(
         field("property", $.identifier),
         field("method", $.function_call),
@@ -131,7 +158,7 @@ module.exports = grammar({
       commaSepTrailing(
         seq(
           field('key', $.key),
-          '=',
+          choice('=', ':'),
           field('value', $._expression))
       ),
       '}'
@@ -154,19 +181,23 @@ module.exports = grammar({
     ),
 
     function_call: $ => prec(203, (seq(
+      optional($.annotation),
       field('name', $.identifier),
       choice(
         prec(50, seq('(', commaSep($._expression), ')')),
-        $.fn_statement
+        $.string,
+        $.fn_statement,
+        $.dictionary
       ),
     ))),
 
     variable_declare_ident: $ => choice(
       field('name', $.identifier),
-      seq('[', commaSep(field('name', $.identifier)), ']')
+      seq('[', commaSep1(field('name', $.identifier)), ']')
     ),
 
     variable_declare: $ => seq(
+      optional($.annotation),
       choice('let', 'var'),
       $.variable_declare_ident,
       seq(
@@ -216,16 +247,24 @@ module.exports = grammar({
     )),
 
 
-    identifier: $ => /[A-za-z_][A-za-z0-9_]*/,
+    identifier: $ => /[A-Za-z_][A-Za-z0-9_]*/,
 
 
     number: _ => token(/[0-9]+\.?[0-9]*/),
-    string: $ => (seq('"',
-      repeat(choice(
-        field('char', $.char),
-        field('escaped', seq('{', $._expression, '}'))
-      )),
-      '"')),
+    string: $ => choice(
+      seq('"',
+        repeat(choice(
+          field('char', $.char),
+          field('escaped', seq('{', $._expression, '}'))
+        )),
+        '"'),
+      seq('"""',
+        repeat(choice(
+          field('char', $.char),
+          field('escaped', seq('{', $._expression, '}'))
+        )),
+        '"""'),
+    ),
     char: _ => (choice(
       "\\n",
       "\\r",

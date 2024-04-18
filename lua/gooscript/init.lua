@@ -8,7 +8,7 @@ M.setup = function ()
 
   parser_config.gooscript = {
     install_info = {
-      url = "https://github.com/bishan-batel/tree-sitter-gooscript",
+      url = "~/code/gooscript/tree-sitter",
       files = { "src/parser.c" },
       branch = "main",
       generate_requires_npm = true,
