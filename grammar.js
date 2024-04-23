@@ -4,7 +4,7 @@ module.exports = grammar({
   name: 'gooscript',
   extras: $ => [/\s|\\\r?\n/, $.comment],
   inline: $ => [$._expression, $._statement, $._line_statement_inner, $._line_statement],
-  world: $ => $.identifier,
+  word: $ => $.identifier,
   rules: {
     source_file: $ => seq(
       optional($.shebang),
@@ -40,12 +40,7 @@ module.exports = grammar({
       ),
     )),
 
-    use_expression: $ => seq(
-      "use",
-      "(",
-      $._expression,
-      ")"
-    ),
+    use_expression: $ => seq( "use", "(", $._expression, ")"),
 
     _statement: $ => choice(
       $.if_statement,

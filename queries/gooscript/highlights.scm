@@ -18,9 +18,11 @@
 ((identifier) @variable.builtin
   (#any-of? @variable.builtin
         "self"
+        "none"
         "null"
         "global"
-        "module"))
+        "module"
+        "ninja"))
 
 (eval_expression "eval" @function.builtin)
 
