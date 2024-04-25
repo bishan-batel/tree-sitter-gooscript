@@ -40,7 +40,7 @@ module.exports = grammar({
       ),
     )),
 
-    use_expression: $ => seq( "use", "(", $._expression, ")"),
+    use_expression: $ => seq("use", "(", $._expression, ")"),
 
     _statement: $ => choice(
       $.if_statement,
@@ -242,7 +242,7 @@ module.exports = grammar({
     )),
 
 
-    identifier: $ => /[A-Za-z_][A-Za-z0-9_]*/,
+    identifier: _ => /[^0-9\s\[\]\(\)\!\@\#\$\%\^\&\*\-\+\{\}<>\,\.\`\~\/\\\;\:\'\"][^\s\[\]\(\)\!\@\#\$\%\^\&\*\-\+\{\}<>\,\.\`\~\/\\\;\:\'\"]*/,
 
 
     number: _ => token(/[0-9]+\.?[0-9]*/),
