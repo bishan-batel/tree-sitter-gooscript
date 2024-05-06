@@ -424,7 +424,7 @@
       "members": [
         {
           "type": "STRING",
-          "value": "scope"
+          "value": "do"
         },
         {
           "type": "SYMBOL",

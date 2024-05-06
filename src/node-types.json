@@ -2610,10 +2610,6 @@
     "named": false
   },
   {
-    "type": "scope",
-    "named": false
-  },
-  {
     "type": "shebang",
     "named": true
   },
