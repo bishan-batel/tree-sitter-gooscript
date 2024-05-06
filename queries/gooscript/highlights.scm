@@ -94,6 +94,7 @@
  "let"
  "var"
  "scope"
+ "block"
 ] @keyword
 
 (is_expression ["is" "not"] @keyword)

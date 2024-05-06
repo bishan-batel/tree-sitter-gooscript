@@ -2518,6 +2518,10 @@
     "named": false
   },
   {
+    "type": "block",
+    "named": false
+  },
+  {
     "type": "cap",
     "named": false
   },
