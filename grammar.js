@@ -51,7 +51,7 @@ module.exports = grammar({
       $.fn_statement,
     ),
 
-    scope_statement: $ => seq(choice("scope", "block"), $.block),
+    scope_statement: $ => seq("do", $.block),
 
     block: $ => prec(50, seq('{', repeat($._statement), field('evaluation', optional($._expression)), '}')),
 

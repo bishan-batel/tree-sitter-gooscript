@@ -423,17 +423,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "scope"
-            },
-            {
-              "type": "STRING",
-              "value": "block"
-            }
-          ]
+          "type": "STRING",
+          "value": "do"
         },
         {
           "type": "SYMBOL",
