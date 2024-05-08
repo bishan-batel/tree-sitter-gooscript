@@ -93,8 +93,8 @@
 [
  "let"
  "var"
- "do"
- "in"
+ "scope"
+ "block"
 ] @keyword
 
 (is_expression ["is" "not"] @keyword)
@@ -115,6 +115,8 @@
 [
  "while"
  "for"
+ "do"
+ "in"
  "until"
 ] @repeat
 
