@@ -18,8 +18,10 @@
 ((identifier) @variable.builtin
   (#any-of? @variable.builtin
         "self"
+        "this"
         "none"
         "null"
+        "nil"
         "global"
         "module"
         "ninja"))
@@ -127,6 +129,7 @@
 
 [
  "return"
+ "eval"
 ] @keyword.return
 
 

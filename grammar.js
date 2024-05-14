@@ -3,7 +3,7 @@
 module.exports = grammar({
   name: 'gooscript',
   extras: $ => [/\s|\\\r?\n/, $.comment],
-  inline: $ => [$._expression, $._statement, $._line_statement_inner, $._line_statement],
+  inline: $ => [$._expression, $._statement],
   word: $ => $.identifier,
   rules: {
     source_file: $ => seq(
@@ -15,8 +15,8 @@ module.exports = grammar({
     shebang: _ => token(seq('#!', /.*/, '\n')),
 
 
-    module_import: $ => seq(sep1(field('name', $.identifier), ":"), prec(500, optional(seq(':', '*')))),
-    module: $ => seq("module", $.module_import, ";"),
+    module_import: $ => prec.left(500, seq(sep1(field('name', choice($.identifier, '*')), ":"))),
+    module: $ => seq("module", $.module_import),
 
     use_statement: $ => prec(100, seq(
       "use",
@@ -42,26 +42,21 @@ module.exports = grammar({
 
     use_expression: $ => seq("use", "(", $._expression, ")"),
 
-    _statement: $ => choice(
+    _statement: $ => seq(choice(
       $.if_statement,
       $.match_statement,
       $.while_statement,
       $.for_statement,
-      $._line_statement,
       $.fn_statement,
-    ),
+      $.variable_declare,
+      $.return_statement,
+      $.use_statement,
+      $._expression,
+    )),
 
     scope_statement: $ => seq("do", $.block),
 
-    block: $ => prec(50, seq('{', repeat($._statement), field('evaluation', optional($._expression)), '}')),
-
-    _line_statement_inner: $ => choice(
-      $.variable_declare,
-      $._expression,
-      $.return_statement,
-      $.use_statement,
-    ),
-    _line_statement: $ => seq($._line_statement_inner, ';'),
+    block: $ => prec(50, seq('{', repeat(seq($._statement, optional(';'))), field('evaluation', optional($._expression)), '}')),
 
     _expression: $ => choice(
       $.use_expression,
@@ -170,7 +165,7 @@ module.exports = grammar({
         ')'
       )),
       choice(
-        seq('=', $._line_statement),
+        seq('=', $._statement),
         $.block
       ),
     ),
@@ -208,7 +203,7 @@ module.exports = grammar({
       "in",
       $._expression,
       choice(
-        seq("do", $._line_statement_inner, field('do', ';')),
+        seq("do", $._statement),
         $.block
       )
     ),
@@ -217,12 +212,12 @@ module.exports = grammar({
       choice("while", "until"),
       $._expression,
       choice(
-        seq("do", $._line_statement_inner, field('do', ';')),
+        seq("do", $._statement, field('do', ';')),
         $.block
       ),
     ),
 
-    then: $ => seq("then", $._line_statement_inner, ';'),
+    then: $ => seq("then", $._statement, ';'),
     if_statement: $ => prec.left(500, seq(
       choice("if", "unless"),
       $._expression,

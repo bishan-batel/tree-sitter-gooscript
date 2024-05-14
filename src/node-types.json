@@ -676,6 +676,10 @@
           "named": true
         },
         {
+          "type": "for_statement",
+          "named": true
+        },
+        {
           "type": "function_call",
           "named": true
         },
@@ -734,6 +738,10 @@
         {
           "type": "variable_declare",
           "named": true
+        },
+        {
+          "type": "while_statement",
+          "named": true
         }
       ]
     }
@@ -741,18 +749,7 @@
   {
     "type": "for_statement",
     "named": true,
-    "fields": {
-      "do": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": ";",
-            "named": false
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": true,
       "required": true,
@@ -783,6 +780,10 @@
         },
         {
           "type": "fn_statement",
+          "named": true
+        },
+        {
+          "type": "for_statement",
           "named": true
         },
         {
@@ -847,6 +848,10 @@
         },
         {
           "type": "variable_declare_ident",
+          "named": true
+        },
+        {
+          "type": "while_statement",
           "named": true
         }
       ]
@@ -1344,6 +1349,10 @@
         "multiple": true,
         "required": true,
         "types": [
+          {
+            "type": "*",
+            "named": false
+          },
           {
             "type": "identifier",
             "named": true
@@ -1883,6 +1892,10 @@
           "named": true
         },
         {
+          "type": "for_statement",
+          "named": true
+        },
+        {
           "type": "function_call",
           "named": true
         },
@@ -1940,6 +1953,10 @@
         },
         {
           "type": "variable_declare",
+          "named": true
+        },
+        {
+          "type": "while_statement",
           "named": true
         }
       ]
@@ -2299,6 +2316,10 @@
           "named": true
         },
         {
+          "type": "for_statement",
+          "named": true
+        },
+        {
           "type": "function_call",
           "named": true
         },
@@ -2356,6 +2377,10 @@
         },
         {
           "type": "variable_declare",
+          "named": true
+        },
+        {
+          "type": "while_statement",
           "named": true
         }
       ]
