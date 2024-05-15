@@ -175,9 +175,9 @@ module.exports = grammar({
       field('name', $.identifier),
       choice(
         prec(50, seq('(', commaSep($._expression), ')')),
-        $.string,
-        $.fn_statement,
-        $.dictionary
+        //$.string,
+        //$.fn_statement,
+        //$.dictionary
       ),
     ))),
 
@@ -212,12 +212,12 @@ module.exports = grammar({
       choice("while", "until"),
       $._expression,
       choice(
-        seq("do", $._statement, field('do', ';')),
+        seq("do", $._statement),
         $.block
       ),
     ),
 
-    then: $ => seq("then", $._statement, ';'),
+    then: $ => seq("then", $._statement),
     if_statement: $ => prec.left(500, seq(
       choice("if", "unless"),
       $._expression,

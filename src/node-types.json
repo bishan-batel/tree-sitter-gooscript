@@ -2271,18 +2271,7 @@
   {
     "type": "while_statement",
     "named": true,
-    "fields": {
-      "do": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": ";",
-            "named": false
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": true,
       "required": true,

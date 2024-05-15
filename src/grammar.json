@@ -1609,18 +1609,6 @@
                     }
                   ]
                 }
-              },
-              {
-                "type": "SYMBOL",
-                "name": "string"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "fn_statement"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "dictionary"
               }
             ]
           }
@@ -1813,14 +1801,6 @@
                 {
                   "type": "SYMBOL",
                   "name": "_statement"
-                },
-                {
-                  "type": "FIELD",
-                  "name": "do",
-                  "content": {
-                    "type": "STRING",
-                    "value": ";"
-                  }
                 }
               ]
             },
@@ -1842,10 +1822,6 @@
         {
           "type": "SYMBOL",
           "name": "_statement"
-        },
-        {
-          "type": "STRING",
-          "value": ";"
         }
       ]
     },
