@@ -21,6 +21,7 @@
         "this"
         "none"
         "null"
+        "unit"
         "nil"
         "global"
         "module"
