@@ -18,14 +18,12 @@
 ((identifier) @variable.builtin
   (#any-of? @variable.builtin
         "self"
-        "this"
-        "none"
-        "null"
         "unit"
         "nil"
         "global"
-        "module"
-        "ninja"))
+        "len"
+        "clone"
+        "each"))
 
 (eval_expression "eval" @function.builtin)
 
@@ -52,7 +50,18 @@
   name: ((identifier) @keyword.operator
   (#eq? @keyword.operator "range")))
 
-"@" @attribute
+(function_call
+  name: ((identifier) @function.builtin
+  (#any-of? @function.builtin
+        "include_str"
+        "print"
+        "each"
+        "get"
+        "idx"
+        "readline"
+        "len"
+        "clone"))
+)
 
 (annotation
   (identifier) @attribute) @attribute
