@@ -6,7 +6,7 @@ M.setup = function()
 	vim.cmd([[ autocmd BufNewFile,BufRead *.goo set filetype=gooscript ]])
 	vim.treesitter.language.register("gooscript", "goo")
 
-	parser_config.gooscript = {
+	parser_config["gooscript"] = {
 		install_info = {
 			url = "~/code/gooscript/tree-sitter",
 			files = { "src/parser.c" },
@@ -16,6 +16,23 @@ M.setup = function()
 		},
 		filetype = "goo",
 	}
+
+	local client = vim.lsp.start_client({
+		name = "gooslsp",
+		cmd = { "/home/bishan_/code/gooscript/build/Debug/bin/gooscript-lsp" },
+	})
+
+	if not client then
+		vim.notify("client be ded lol")
+		return
+	end
+
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = "gooscript",
+		callback = function()
+			vim.lsp.buf_attach_client(0, client)
+		end,
+	})
 end
 
 require("nvim-web-devicons").set_icon({
