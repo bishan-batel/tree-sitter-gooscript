@@ -14,27 +14,39 @@ M.setup = function()
 			generate_requires_npm = true,
 			requries_generate_from_grammar = true,
 		},
-		filetype = "goo",
+		filetype = "gooscript",
 	}
 
-	local client = vim.lsp.start_client({
-		name = "gooslsp",
-		cmd = { "/home/bishan_/code/gooscript/build/Debug/bin/gooscript-lsp" },
-	})
+	local client = nil
 
-	if not client then
-		vim.notify("client be ded lol")
-		return
+	-- @return integer?
+	function start_client()
+		return vim.lsp.start_client({
+			name = "gooslsp",
+			cmd = { "/home/bishan_/code/gooscript/build/Debug/bin/gooscript-lsp" },
+		})
 	end
+
+	vim.api.nvim_create_autocmd({ "BufNewFile, BufRead" }, {
+		pattern = "*.goo",
+		command = [[set ft=gooscript]],
+	})
 
 	vim.api.nvim_create_autocmd("FileType", {
 		pattern = "gooscript",
 		callback = function()
-			vim.lsp.buf_attach_client(0, client)
+			if not client then
+				client = start_client()
+			end
+
+			if not client then
+				vim.notify("client be ded lol")
+			else
+				vim.lsp.buf_attach_client(0, client)
+			end
 		end,
 	})
 end
-
 require("nvim-web-devicons").set_icon({
 	goo = {
 		icon = "",
