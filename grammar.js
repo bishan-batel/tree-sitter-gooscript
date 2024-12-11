@@ -157,7 +157,7 @@ module.exports = grammar({
     return_statement: $ => prec.left(500, seq("return", optional($._expression))),
 
     fn_statement: $ => seq(
-      "fn",
+      choice("fn", "func", "entrypoint"),
       optional(field("name", $.identifier)),
       optional(seq(
         '(',

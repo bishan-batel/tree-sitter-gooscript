@@ -2572,6 +2572,10 @@
     "named": false
   },
   {
+    "type": "func",
+    "named": false
+  },
+  {
     "type": "identifier",
     "named": true
   },
